@@ -1,10 +1,12 @@
 import random
 
 def draw_card():
+    """Draw a random card from a standard deck (values only)."""
     cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
     return random.choice(cards)
 
 def card_value(card):
+    """Return the Trinity Draw value of a card."""
     if card == "A":
         return 1
     elif card in ["10", "J", "Q", "K"]:
@@ -13,10 +15,12 @@ def card_value(card):
         return int(card)
 
 def hand_value(hand):
+    """Calculate total hand value using mod 10 rule."""
     total = sum(card_value(card) for card in hand)
     return total % 10
 
 def player_turn(hand):
+    """Handle the player's optional third card decision."""
     value = hand_value(hand)
     print(f"\nYour hand: {hand} | Value: {value}")
 
@@ -39,6 +43,7 @@ def player_turn(hand):
     return hand
 
 def house_turn(hand):
+    """House draws automatically based on fixed rules."""
     value = hand_value(hand)
     print(f"\nHouse hand: {hand} | Value: {value}")
 
@@ -52,6 +57,7 @@ def house_turn(hand):
     return hand
 
 def determine_winner(player_hand, house_hand):
+    """Determine the round winner."""
     player_value = hand_value(player_hand)
     house_value = hand_value(house_hand)
 
@@ -83,15 +89,12 @@ def main():
         print(f"\n=== ROUND {round_number} ===")
         print(f"Your Lives: {player_lives} | House Lives: {house_lives}")
 
-        # Initial deal
         player_hand = [draw_card(), draw_card()]
         house_hand = [draw_card(), draw_card()]
 
-        # Player and house turns
         player_hand = player_turn(player_hand)
         house_hand = house_turn(house_hand)
 
-        # Determine winner
         result = determine_winner(player_hand, house_hand)
 
         if result == "player":
@@ -103,7 +106,6 @@ def main():
         else:
             print("\n⚖ It's a tie. No lives lost.")
 
-        # Exit option
         while True:
             exit_choice = input("\nContinue playing? (y/n): ").lower()
             if exit_choice in ["y", "n"]:
@@ -116,7 +118,6 @@ def main():
 
         round_number += 1
 
-    # Game over
     print("\n🏁 GAME OVER")
     if player_lives > house_lives:
         print("🏆 You outlasted the House!")
